@@ -40,3 +40,73 @@ best_ny_html %>%
   first()
 ```
 
+## CSS selector
+
+```{r}
+sw_url='https://www.imdb.com/list/ls070150896/'
+
+sw_html=read_html(sw_url)
+
+```
+
+```{r}
+sw_title_vec=
+  sw_html %>% 
+  html_elements('.ipc-title-link-wrapper .ipc-title__text') %>% 
+  html_text()
+
+sw_runtime_vec=
+sw_html %>% 
+  html_elements('.dli-title-metadata-item:nth-child(2)') %>% 
+  html_text()
+
+sw_score_vec=
+sw_html %>% 
+  html_elements('.metacritic-score-box') %>% 
+  html_text()
+
+sw_df=
+  tibble(
+    title=sw_title_vec,
+    runtime=sw_runtime_vec,
+    score=sw_score_vec
+  )
+```
+
+
+Let's import some books
+
+```{r}
+books_html = read_html('http://books.toscrape.com/')
+
+books_html %>% 
+  html_elements('.product_pod a') %>% 
+  html_text()
+```
+
+## Use API 
+
+Get water data
+
+```{r}
+nyc_water=
+  GET('https://data.cityofnewyork.us/resource/ia2d-e54m.csv') %>% 
+  content()
+```
+
+```{r}
+brfss_df=
+  GET('https://chronicdata.cdc.gov/resource/acme-vg9e.csv',
+      query = list('$limit'=5000)) %>% 
+  content()
+```
+
+Pokemon API
+
+```{r}
+pokemon=
+  GET('https://pokeapi.co/api/v2/pokemon/ditto') %>% 
+  content()
+
+```
+

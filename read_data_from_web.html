@@ -385,6 +385,110 @@ best_ny_html %&gt;%
 ## 6 Utilities        150.5%     115.9%     100.0%         
 ## 7 Transportation   181.1      140.7      100.0          
 ## 8 Miscellaneous    136.4      121.8      100.0</code></pre>
+<div id="css-selector" class="section level2">
+<h2>CSS selector</h2>
+<pre class="r"><code>sw_url=&#39;https://www.imdb.com/list/ls070150896/&#39;
+
+sw_html=read_html(sw_url)</code></pre>
+<pre class="r"><code>sw_title_vec=
+  sw_html %&gt;% 
+  html_elements(&#39;.ipc-title-link-wrapper .ipc-title__text&#39;) %&gt;% 
+  html_text()
+
+sw_runtime_vec=
+sw_html %&gt;% 
+  html_elements(&#39;.dli-title-metadata-item:nth-child(2)&#39;) %&gt;% 
+  html_text()
+
+sw_score_vec=
+sw_html %&gt;% 
+  html_elements(&#39;.metacritic-score-box&#39;) %&gt;% 
+  html_text()
+
+sw_df=
+  tibble(
+    title=sw_title_vec,
+    runtime=sw_runtime_vec,
+    score=sw_score_vec
+  )</code></pre>
+<p>Let’s import some books</p>
+<pre class="r"><code>books_html = read_html(&#39;http://books.toscrape.com/&#39;)
+
+books_html %&gt;% 
+  html_elements(&#39;.product_pod a&#39;) %&gt;% 
+  html_text()</code></pre>
+<pre><code>##  [1] &quot;&quot;                                     
+##  [2] &quot;A Light in the ...&quot;                   
+##  [3] &quot;&quot;                                     
+##  [4] &quot;Tipping the Velvet&quot;                   
+##  [5] &quot;&quot;                                     
+##  [6] &quot;Soumission&quot;                           
+##  [7] &quot;&quot;                                     
+##  [8] &quot;Sharp Objects&quot;                        
+##  [9] &quot;&quot;                                     
+## [10] &quot;Sapiens: A Brief History ...&quot;         
+## [11] &quot;&quot;                                     
+## [12] &quot;The Requiem Red&quot;                      
+## [13] &quot;&quot;                                     
+## [14] &quot;The Dirty Little Secrets ...&quot;         
+## [15] &quot;&quot;                                     
+## [16] &quot;The Coming Woman: A ...&quot;              
+## [17] &quot;&quot;                                     
+## [18] &quot;The Boys in the ...&quot;                  
+## [19] &quot;&quot;                                     
+## [20] &quot;The Black Maria&quot;                      
+## [21] &quot;&quot;                                     
+## [22] &quot;Starving Hearts (Triangular Trade ...&quot;
+## [23] &quot;&quot;                                     
+## [24] &quot;Shakespeare&#39;s Sonnets&quot;                
+## [25] &quot;&quot;                                     
+## [26] &quot;Set Me Free&quot;                          
+## [27] &quot;&quot;                                     
+## [28] &quot;Scott Pilgrim&#39;s Precious Little ...&quot;  
+## [29] &quot;&quot;                                     
+## [30] &quot;Rip it Up and ...&quot;                    
+## [31] &quot;&quot;                                     
+## [32] &quot;Our Band Could Be ...&quot;                
+## [33] &quot;&quot;                                     
+## [34] &quot;Olio&quot;                                 
+## [35] &quot;&quot;                                     
+## [36] &quot;Mesaerion: The Best Science ...&quot;      
+## [37] &quot;&quot;                                     
+## [38] &quot;Libertarianism for Beginners&quot;         
+## [39] &quot;&quot;                                     
+## [40] &quot;It&#39;s Only the Himalayas&quot;</code></pre>
+</div>
+<div id="use-api" class="section level2">
+<h2>Use API</h2>
+<p>Get water data</p>
+<pre class="r"><code>nyc_water=
+  GET(&#39;https://data.cityofnewyork.us/resource/ia2d-e54m.csv&#39;) %&gt;% 
+  content()</code></pre>
+<pre><code>## Rows: 45 Columns: 4
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (4): year, new_york_city_population, nyc_consumption_million_gallons_per...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>brfss_df=
+  GET(&#39;https://chronicdata.cdc.gov/resource/acme-vg9e.csv&#39;,
+      query = list(&#39;$limit&#39;=5000)) %&gt;% 
+  content()</code></pre>
+<pre><code>## Rows: 5000 Columns: 23
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (16): locationabbr, locationdesc, class, topic, question, response, data...
+## dbl  (6): year, sample_size, data_value, confidence_limit_low, confidence_li...
+## lgl  (1): locationid
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>Pokemon API</p>
+<pre class="r"><code>pokemon=
+  GET(&#39;https://pokeapi.co/api/v2/pokemon/ditto&#39;) %&gt;% 
+  content()</code></pre>
+</div>
 
 
 
