@@ -1,0 +1,11 @@
+---
+title: "Strings and Factors"
+author: "Miriam Lachs"
+date: "2024-10-15"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(rvest)
+```
